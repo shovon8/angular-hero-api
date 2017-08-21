@@ -12,12 +12,12 @@ Hero.getHeroes = () => {
 Hero.getHero = (id) => {
     let hero = heroes.filter(h => h.id === parseInt(id));
 
-    return hero.length === 0 ? {msg: 'not found'} : hero[0];
+    return hero.length === 0 ? {msg: 'hero not found'} : hero[0];
 };
 
 
 
-Hero.findById = (id) => {
+Hero.findIndexById = (id) => {
     let heroIndex = -1;
     let heroId = parseInt(id);
 
@@ -26,6 +26,8 @@ Hero.findById = (id) => {
             heroIndex = i;
             return true;
         }
+
+        return false;
     });
 
     return heroIndex;
@@ -46,31 +48,28 @@ Hero.create = (name) => {
 
 
 
-Hero.update = (body) => {
-    let heroId = parseInt(body.id);
-    let heroIndex = Hero.findById(heroId);
+Hero.update = (id, name) => {
+    let heroId = parseInt(id);
+    let heroIndex = Hero.findIndexById(heroId);
 
     if(heroIndex !== -1) {
-        heroes[heroIndex] = {
-            id: heroId,
-            name: body.name
-        };
+        heroes[heroIndex].name = name;
 
         return heroes[heroIndex];
     } else {
-        return {msg: 'not found'};
+        return {msg: 'hero not found'};
     }
 }
 
 
 
 Hero.delete = (id) => {
-    let heroIndex = Hero.findById(id);
+    let heroIndex = Hero.findHeroById(id);
 
     if(heroIndex > -1) {
         heroes.splice(heroIndex, 1);
         return {msg: 'success'};
     } else {
-        return {msg: 'not found'};        
+        return {msg: 'hero not found'};        
     }
 };
