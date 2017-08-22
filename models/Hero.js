@@ -64,7 +64,7 @@ Hero.update = (id, name) => {
 
 
 Hero.delete = (id) => {
-    let heroIndex = Hero.findHeroById(id);
+    let heroIndex = Hero.findIndexById(id);
 
     if(heroIndex > -1) {
         heroes.splice(heroIndex, 1);
