@@ -7,7 +7,9 @@ let Hero = require('../models/Hero');
 router.get('/api/heroes', (req, res) => {
     Hero.getHeroes().then((heroes) => {
         res.json(heroes);
-    }).catch(Hero.errorHandler);
+    }).catch((err) => {
+        res.json(Hero.errMsg);
+    });
 });
 
 
@@ -19,7 +21,9 @@ router.get('/api/hero/:id', (req, res) => {
         } else {
             res.json({msg: 'hero not found'});
         }
-    }).catch(Hero.errorHandler);
+    }).catch((err) => {
+        res.json(Hero.errMsg);
+    });
 });
 
 
@@ -27,7 +31,9 @@ router.get('/api/hero/:id', (req, res) => {
 router.put('/api/heroes', (req, res) => {
     Hero.createHero(req.body.name).then((hero) => {
         res.json(hero);
-    }).catch(Hero.errorHandler);
+    }).catch((err) => {
+        res.json(Hero.errMsg);
+    });
 });
 
 
@@ -39,7 +45,9 @@ router.post('/api/hero/:id', (req, res) => {
         } else {
             res.json({msg: 'hero not found'});
         } 
-    }).catch(Hero.errorHandler);
+    }).catch((err) => {
+        res.json(Hero.errMsg);
+    });
 });
 
 
@@ -51,7 +59,9 @@ router.delete('/api/hero/:id', (req, res) => {
         } else {
             res.json({msg: 'hero not found'});
         }
-    }).catch(Hero.errorHandler);
+    }).catch((err) => {
+        res.json(Hero.errMsg);
+    });
 });
 
 

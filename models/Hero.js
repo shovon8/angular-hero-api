@@ -1,4 +1,6 @@
 let mongoose = require('mongoose');
+let Promise = require('bluebird');
+
 let Schema = mongoose.Schema;
 
 let heroSchema = new Schema({
@@ -7,10 +9,12 @@ let heroSchema = new Schema({
 
 let Hero = module.exports = mongoose.model('Hero', heroSchema);
 
-Hero.errorHandler = (err) => {
-    return {
-        msg: 'An error occured'
-    };
+Hero.errMsg = {
+    msg: 'invalid operation'
+};
+
+Hero.verifyId = (id) => {
+    return mongoose.Types.ObjectId.isValid(id);
 };
 
 Hero.getHeroes = () => {
@@ -18,7 +22,11 @@ Hero.getHeroes = () => {
 };
 
 Hero.getHero = (id) => {
-    return Hero.findById(id).exec();
+    if(Hero.verifyId(id)) {
+        return Hero.findById(id).exec();        
+    }
+
+    return Promise.reject();
 };
 
 Hero.createHero = (name) => {
@@ -26,10 +34,17 @@ Hero.createHero = (name) => {
 };
 
 Hero.deleteHero = (id) => {
-    return Hero.findByIdAndRemove(id);
+    if(Hero.verifyId(id)) {
+        return Hero.findByIdAndRemove(id);        
+    }
+
+    return Promise.reject();
 }
 
 Hero.updateHero = (id, name) => {
-    return Hero.findByIdAndUpdate(id, {name: name});
+    if(Hero.verifyId(id)) {
+        return Hero.findByIdAndUpdate(id, {name: name});        
+    }
+    
+    return Promise.reject();
 };
-
