@@ -1,75 +1,35 @@
-let heroes = require('../data/heroes');
-let Hero = module.exports;
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
 
+let heroSchema = new Schema({
+    name: String
+});
 
+let Hero = module.exports = mongoose.model('Hero', heroSchema);
+
+Hero.errorHandler = (err) => {
+    return {
+        msg: 'An error occured'
+    };
+};
 
 Hero.getHeroes = () => {
-    return heroes;
+    return Hero.find({}).exec();
 };
-
-
 
 Hero.getHero = (id) => {
-    let hero = heroes.filter(h => h.id === parseInt(id));
-
-    return hero.length === 0 ? {msg: 'hero not found'} : hero[0];
+    return Hero.findById(id).exec();
 };
 
-
-
-Hero.findIndexById = (id) => {
-    let heroIndex = -1;
-    let heroId = parseInt(id);
-
-    heroes.filter((h, i) => {
-        if(h.id === heroId) {
-            heroIndex = i;
-            return true;
-        }
-
-        return false;
-    });
-
-    return heroIndex;
-}
-
-
-
-Hero.create = (name) => {
-    let hero = {
-        id: heroes[heroes.length - 1].id + 1,
-        name: name
-    };
-
-    heroes.push(hero);
-
-    return hero;
-}
-
-
-
-Hero.update = (id, name) => {
-    let heroId = parseInt(id);
-    let heroIndex = Hero.findIndexById(heroId);
-
-    if(heroIndex !== -1) {
-        heroes[heroIndex].name = name;
-
-        return heroes[heroIndex];
-    } else {
-        return {msg: 'hero not found'};
-    }
-}
-
-
-
-Hero.delete = (id) => {
-    let heroIndex = Hero.findIndexById(id);
-
-    if(heroIndex > -1) {
-        heroes.splice(heroIndex, 1);
-        return {msg: 'success'};
-    } else {
-        return {msg: 'hero not found'};        
-    }
+Hero.createHero = (name) => {
+    return Hero.create({name: name});
 };
+
+Hero.deleteHero = (id) => {
+    return Hero.findByIdAndRemove(id);
+}
+
+Hero.updateHero = (id, name) => {
+    return Hero.findByIdAndUpdate(id, {name: name});
+};
+

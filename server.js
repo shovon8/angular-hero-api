@@ -2,6 +2,11 @@ let express = require('express');
 let bodyParser = require('body-parser');
 let app = express();
 let heroesRoutes = require('./routes/heroes');
+let mongoose = require('mongoose');
+
+mongoose.Promise = require('bluebird');
+
+mongoose.connect(require('./config').mongoUrl, {useMongoClient: true});
 
 
 
