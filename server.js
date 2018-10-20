@@ -6,6 +6,7 @@ let heroesRoutes = require('./routes/heroes');
 
 
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 app.use(heroesRoutes);
 
 

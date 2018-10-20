@@ -16,13 +16,13 @@ router.get('/api/hero/:id', (req, res) => {
 
 
 
-router.put('/api/heroes', (req, res) => {
+router.post('/api/heroes', (req, res) => {
     res.json(hero.create(req.body.name));
 });
 
 
 
-router.post('/api/hero/:id', (req, res) => {
+router.put('/api/hero/:id', (req, res) => {
     res.json(hero.update(req.params.id, req.body.name));
 });
 
